@@ -7,20 +7,22 @@ const init = () => {
   const right = document.getElementById("car-right-button");
   const container = document.getElementById("car-content-container");
   const numElements = document.getElementsByClassName("car-content").length;
-  let width = document.getElementById("car-content-container").offsetWidth*-1;
+  let width;
   let active = 0;
   let str = "";
 
   right.addEventListener("click", (e) => {
+    right.classList.remove("slow-bounce");
     if(active >= numElements-1){
       return;
     } else {
       width = document.getElementById("car-content-container").offsetWidth*-1;
-      left.style.display = "block";
+      left.classList.add("block");
+      left.classList.remove("none");
       active += 1;
       container.style.transform = "translateX(" + (active*width).toString() + "px)";
       if(active === numElements - 1){
-        right.style.display = "none";
+        right.classList.add("none");
       }
     }
   })
@@ -30,11 +32,12 @@ const init = () => {
       return;
     } else {
       width = document.getElementById("car-content-container").offsetWidth*-1;
-      right.style.display = "block";
+      right.classList.add("block");
+      right.classList.remove("none");
       active -= 1;
       container.style.transform = "translateX(" + (active*width).toString() + "px)";
       if(active === 0){
-        left.style.display = "none";
+        left.classList.add("none");
       }
     }
   })
