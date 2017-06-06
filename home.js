@@ -15,6 +15,7 @@ const init = () => {
     if(active >= numElements-1){
       return;
     } else {
+      width = document.getElementById("car-content-container").offsetWidth*-1;
       left.style.display = "block";
       active += 1;
       container.style.transform = "translateX(" + (active*width).toString() + "px)";
@@ -28,9 +29,10 @@ const init = () => {
     if(active <= 0){
       return;
     } else {
+      width = document.getElementById("car-content-container").offsetWidth*-1;
       right.style.display = "block";
       active -= 1;
-      container.style.transform = "translateX(" + (active*-500).toString() + "px)";
+      container.style.transform = "translateX(" + (active*width).toString() + "px)";
       if(active === 0){
         left.style.display = "none";
       }
