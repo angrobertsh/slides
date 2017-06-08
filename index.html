@@ -7,8 +7,8 @@
     <link rel="stylesheet" href="./style.css">
   </head>
   <body>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
     <script src="./home.js"></script>
-
 
     <div class="car-container">
       <div id="car-left-button" class="car-button none">
@@ -18,32 +18,48 @@
         <div id="car-content-container">
           <div class="car-content" id="1">
             <h1>KQED</h1>
-            <ul>...</ul>
+            <div>
+              <span id="dot-1" class="dot">.</span>
+              <span id="dot-2" class="dot">.</span>
+              <span id="dot-3" class="dot">.</span>
+            </div>
           </div>
           <div class="car-content" id="2">
-            Here are some reasons to hire a junior developer:
+            <h2>Why hire a junior engineer?</h2>
             <ul>
-              <li>We're cheap</li>
+              <li><h4>We offer fresh perspectives</h4></li>
+              <li><h4>We're hungry to contribute</h4></li>
+              <li><h4>We can become your ideal engineers</h4></li>
+              <li><h4>We tackle the tedious but necessary work to make web projects great</h4></li>
+              <li><h4>We're cheaper</h4></li>
             </ul>
           </div>
           <div class="car-content" id="3">
-            The greatest benefit would come to your development team
+            <h2>Your engineers would benefit the most</h2>
           </div>
           <div class="car-content" id="4">
-            (2 graphs)
+            <h5>A Single Engineer's Day:</h5>
+            <svg id="pie1" class="piechart chart" width="410" height="230"></svg>
+            <h5>An Engineering Duo:</h5>
+            <div id="double-pie">
+              <svg id="pie2" class="piechart chart" width="410" height="230"></svg>
+              <svg id="pie3" class="piechart chart" width="410" height="230"></svg>
+            </div>
           </div>
           <div class="car-content" id="5">
-            (line chart)
+            <h4>Team Productivity:</h4>
+            <svg id="line" class="linechart chart"></svg>
           </div>
           <div class="car-content" id="6">
             <h2>And you have an amazing candidate all lined up!</h2>
             <div class="me"><img src="./assets/images/me.jpg"></img></div>
-            <div id="reasons">Well...</div>
-            <button id="how-so">How so?</button>
+            <h4 id="reasons">(Me!)</h4>
+            <div class="button-holder"><button id="how-so">How so?</button></div>
           </div>
           <div class="car-content" id="7">
-            <div>Thanks for your time! See other ways I can contribute here:</div>
-            <div><a href="https://github.com/angrobertsh"><img src="./assets/images/github.png"></img></a></div>
+            <h4>Thanks for your time! See other ways I can contribute here:</h4>
+            <div><a href="https://github.com/angrobertsh"><img class="outro" id="git" src="./assets/images/github.png"></img></a>
+            <a href="https://linkedin.com/in/angrobert"><img class="outro" id="in" src="./assets/images/in.svg"></img></a></div>
           </div>
         </div>
       </div>
