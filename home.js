@@ -80,6 +80,8 @@ function drawSVGs(){
   drawPie("#pie2", PIE2, "Sr.")
   drawPie("#pie3", PIE3, "Jr.")
 
+  drawLineGraph()
+
 }
 
 function drawPie(svgId, pieData, labelText){
@@ -89,11 +91,11 @@ function drawPie(svgId, pieData, labelText){
     radius = Math.min(width, height) / 2,
     g = chart.append("g").attr("transform", "translate(" + width / 3 + "," + height / 2 + ")");
 
-  const color = d3.scaleOrdinal(["green", "yellow", "red"]);
+  const color = d3.scaleOrdinal(["green", "yellow", "steelblue"]);
 
   const pie = d3.pie()
     .sort(null)
-    .value((d) => (d.percent));
+    .value(function(d) {return (d.percent)});
 
   const path = d3.arc()
     .outerRadius(radius - 10)
@@ -107,17 +109,17 @@ function drawPie(svgId, pieData, labelText){
       .data(pie(pieData))
     .enter()
       .append("g")
-      .attr("class", (d) => ("arc " + d.data.type));
+      .attr("class", function(d) {return ("arc " + d.data.type)});
 
   arc.append("path")
     .attr("d", path)
-    .attr("fill", (d) => (color(d.data.index)));
+    .attr("fill", function(d) {return (color(d.data.index))});
 
   arc.append("text")
-    .attr("transform", (d) => ("translate(" + label.centroid(d) + ")"))
+    .attr("transform", function(d) {return ("translate(" + label.centroid(d) + ")")})
     .attr("dy", "-3px")
     .attr("dx", "-5px")
-    .text((d) => (d.data.type + " (" + d.data.percent + "%)"));
+    .text(function(d) {return (d.data.type + " (" + d.data.percent + "%)")});
 
   g.append("text")
     .attr("transform", "translate(-20, 10)")
@@ -128,6 +130,84 @@ function drawPie(svgId, pieData, labelText){
     .attr("transform", "translate(-30, 25)")
     .text("Engineer");
 
+}
+
+function drawLineGraph(){
+  const margin = {top: 10, right: 10, bottom: 80, left: 75},
+            width = 750 - margin.left - margin.right,
+            height = 500 - margin.top - margin.bottom;
+
+  const chart = d3.select("#line")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+  const x = d3.scaleLinear()
+      .range([0, width])
+      .domain([0, 10]);
+
+  const y = d3.scaleLinear()
+      .range([height, 0])
+      .domain([0, 200]);
+
+  chart.append("g")
+    .attr("class", "axis x-axis")
+    .attr("transform", "translate(0," + height + ")")
+    .call(d3.axisBottom(x)
+            .ticks(10));
+
+  chart.append("text")
+    .attr("transform", "translate(" + (width/2) + " ," + (height + 35) + ")")
+    .style("text-anchor", "middle")
+    .text("Days");
+
+  chart.append("g")
+    .attr("class", "axis y-axis")
+    .call(d3.axisLeft(y).ticks(10, "s"));
+
+  chart.append("text")
+    .attr("transform", "rotate(-90) translate(" + (height/-2) + " , 0)")
+    .attr("dy", "-50px")
+    .attr("dx", "-2.35em")
+    .text("Challenging Project Time");
+
+  let area = d3.area()
+    .x(function(d) {return x(d.time)})
+    .y0(height)
+    .y1(function(d) {return y(d.work)})
+
+  let valueline = d3.line()
+      .x((d) => ( x(d.time) ))
+      .y((d) => ( y(d.work) ));
+
+  chart.append("path")
+      .datum(LINE2)
+      .attr("class", "line line2")
+      .attr("d", valueline);
+
+  chart.append("path")
+      .datum(LINE2)
+      .attr("class", "area2")
+      .attr("d", area);
+
+  chart.append("path")
+      .datum(LINE1)
+      .attr("class", "line line1")
+      .attr("d", valueline);
+
+  chart.append("path")
+      .datum(LINE1)
+      .attr("class", "area1")
+      .attr("d", area);
+
+  chart.append("text")
+      .attr("transform", "translate(" + (width/4) + " ," + (height - 220) + ")")
+      .text("With a junior engineer");
+
+  chart.append("text")
+      .attr("transform", "translate(" + (width/1.7) + " ," + (height - 50) + ")")
+      .text("Without a junior engineer");
 
 }
 
@@ -215,66 +295,66 @@ var PIE3 = [
 var LINE1 = [
   {
     time: 0,
-    work: 10
+    work: 5
   },
   {
     time: 1,
-    work: 20
+    work: 9
   },
   {
     time: 2,
-    work: 30
+    work: 16
   },
   {
     time: 3,
-    work: 40
+    work: 24
   },
   {
     time: 4,
-    work: 50
+    work: 30
   },
   {
     time: 5,
-    work: 60
+    work: 37
   },
   {
     time: 6,
-    work: 70
+    work: 48
   },
   {
     time: 7,
-    work: 80
+    work: 58
   },
   {
     time: 8,
-    work: 90
+    work: 62
   },
   {
     time: 9,
-    work: 100
+    work: 70
   },
   {
     time: 10,
-    work: 110
+    work: 78
   },
 ]
 
 var LINE2 = [
   {
     time: 0,
-    work: 18
+    work: 10
   },
   {
     time: 1,
-    work: 36
+    work: 24
   },
   {
     time: 2,
-    work: 54
+    work: 44
   },
   {
     time: 3,
-    work: 72
+    work: 62
   },
   {
     time: 4,
@@ -282,23 +362,23 @@ var LINE2 = [
   },
   {
     time: 5,
-    work: 108
+    work: 110
   },
   {
     time: 6,
-    work: 126
+    work: 122
   },
   {
     time: 7,
-    work: 144
+    work: 135
   },
   {
     time: 8,
-    work: 162
+    work: 152
   },
   {
     time: 9,
-    work: 180
+    work: 170
   },
   {
     time: 10,
