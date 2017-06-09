@@ -17,6 +17,7 @@ time, mark, audio, video {
 	font-size: 100%;
 	vertical-align: baseline;
 	font-family: Helvetica;
+	color: rgba(0, 0, 0, .85);
 }
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure,
@@ -65,7 +66,7 @@ h2 {
 h4 {
 	font-size: 2rem;
 	margin: 10px;
-	height: 4.5rem;
+	height: 4rem;
 }
 
 h5 {
@@ -86,7 +87,7 @@ button {
 	outline-style: none;
 	transition: all 0.1s;
 	-webkit-transition: all 0.1s;
-	border-bottom: 5px solid #2980B9;
+	border-bottom: 5px solid lightslategray;
 	border-radius: 10px;
 }
 
@@ -202,10 +203,16 @@ button:active {
 
 /*graphs*/
 
+#add-engineer{
+	margin-top: 15px;
+}
+
 #double-pie {
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	overflow: hidden;
+	margin: 0;
 }
 
 svg text {
@@ -239,11 +246,23 @@ svg text {
 	fill: rgba(0, 0, 255, .9);
 }
 
-/*classes*/
+/*slide 5*/
 
-.flex {
-	display: flex;
+#prod{
+	position: relative;
 }
+
+#rect{
+	position: absolute;
+	content: "";
+	left: 76px;
+	top: 9px;
+	width: 666px;
+	height: 411px;
+	background-color: rgb(234, 230, 255);
+}
+
+/*classes*/
 
 .none {
 	display: none;
@@ -260,22 +279,22 @@ svg text {
 /*keyframes*/
 
 #dot-1 {
-	-webkit-animation: fadeIn 1s ease-in;
-	animation: fadeIn 1s ease-in;
+	-webkit-animation: fadeIn .75s ease-in;
+	animation: fadeIn .75s ease-in;
 }
 
 #dot-2 {
-	-webkit-animation: fadeIn 1.75s ease-in;
-	animation: fadeIn 1.75s ease-in;
+	-webkit-animation: fadeIn 1.5s ease-in;
+	animation: fadeIn 1.5s ease-in;
 }
 
 #dot-3 {
-	-webkit-animation: fadeIn 2.5s ease-in;
-	animation: fadeIn 2.5s ease-in;
+	-webkit-animation: fadeIn 2.25s ease-in;
+	animation: fadeIn 2.25s ease-in;
 }
 
 .slow-bounce {
-	opacity: .5;
+	opacity: 1;
 	-webkit-animation: bounce 1s infinite;
 	animation: bounce 1s infinite;
 	-webkit-animation-delay: 1s;
@@ -283,9 +302,36 @@ svg text {
 }
 
 .slow-bounce:hover {
-	opacity: .8;
+	opacity: .9;
 	-webkit-animation-play-state: paused;
 	animation-play-state: paused;
+}
+
+.shrink {
+	-webkit-animation: percentShrink 3s ease-out;
+	animation: percentShrink 3s ease-out;
+	-webkit-animation-fill-mode: forwards;
+	animation-fill-mode: forwards;
+	-webkit-animation-delay: 1s;
+	animation-delay: 1s;
+}
+
+.slideIn {
+	-webkit-animation: fadeIn 1.25s ease-in;
+	animation: fadeIn 1.25s ease-in;
+	-webkit-animation: superWiden .5s;
+	animation: superWiden .5s;
+	-webkit-animation-fill-mode: forwards;
+	animation-fill-mode: forwards;
+}
+
+.slideOut {
+	-webkit-animation: fadeOut .25s ease-in;
+	animation: fadeOut .25s ease-in;
+	-webkit-animation: superShrink .25s;
+	animation: superShrink .25s;
+	-webkit-animation-fill-mode: forwards;
+	animation-fill-mode: forwards;
 }
 
 @keyframes bounce {
@@ -304,8 +350,23 @@ svg text {
 	100% {opacity: 0;}
 }
 
-@keyframes fadeInOut {
-	0% {opacity: 0;}
-	50% {opacity: 1;}
-	100% {opacity: 0;}
+@keyframes percentShrink {
+	0% {width: 100%;
+			transform: translateX(0px);}
+	100% {width: 0%;
+			transform: translateX(1000px);}
+}
+
+@keyframes superShrink {
+	0% {width: 550px;
+			transform: translateX(0px);}
+	100% {width: 0px;
+			transform: translateX(1000px);}
+}
+
+@keyframes superWiden {
+	0% {width: 0px;
+			transform: translateX(1000px);}
+	100% {width: 550px;
+			transform: translateX(0px);}
 }

@@ -6,10 +6,12 @@ document.addEventListener("DOMContentLoaded", function() {
 function init() {
   var left = document.getElementById("car-left-button");
   var right = document.getElementById("car-right-button");
+  var addEngineer = document.getElementById("add-engineer");
   var howSo = document.getElementById("how-so");
   var reasons = document.getElementById("reasons");
   var container = document.getElementById("car-content-container");
   var numElements = document.getElementsByClassName("car-content").length;
+  var rect = document.getElementById("rect");
   var width;
   var active = 0;
   var str = "";
@@ -24,6 +26,12 @@ function init() {
       width = document.getElementById("car-content-container").offsetWidth*-1;
       left.classList.add("block");
       left.classList.remove("none");
+      if(active === 3){
+        resetSlide3();
+        rect.classList.add("shrink");
+      } else if (active === 4){
+        rect.classList.remove("shrink");
+      }
       active += 1;
       container.style.transform = "translateX(" + (active*width).toString() + "px)";
       if(active === numElements - 1){
@@ -39,16 +47,25 @@ function init() {
       width = document.getElementById("car-content-container").offsetWidth*-1;
       right.classList.add("block");
       right.classList.remove("none");
+      if(active === 3){
+        resetSlide3();
+      } else if (active === 4){
+        rect.classList.remove("shrink");
+      }
       active -= 1;
       container.style.transform = "translateX(" + (active*width).toString() + "px)";
       if(active === 0){
         left.classList.add("none");
+      } else if (active === 4) {
+        rect.classList.add("shrink");
       }
     }
   })
 
   howSo.addEventListener("click", function(e) {
+    e.preventDefault();
     e.currentTarget.innerHTML = "What else?";
+    e.currentTarget.classList.remove("slow-bounce");
     var rand = Math.random();
     if(rand < .75){
       val = Math.floor(Math.random() * REASONS_IMPORTANT.length);
@@ -67,6 +84,21 @@ function init() {
     }
   })
 
+  addEngineer.addEventListener("click", function(e) {
+    e.preventDefault();
+    if(addEngineer.checked === true){
+      resetSlide3();
+    } else {
+      addEngineer.checked = true;
+      document.getElementById("eng-title").innerHTML = "An Engineering Duo:";
+      addEngineer.innerHTML = "Remove a Junior Engineer";
+      addEngineer.classList.remove("slow-bounce")
+      changePie("#pie1", PIE2);
+      document.getElementById("pie3").classList.add("slideIn");
+      document.getElementById("pie3").classList.remove("slideOut");
+    }
+  })
+
   window.addEventListener("resize", function(e){
     width = document.getElementById("car-content-container").offsetWidth*-1;
     container.style.transform = "translateX(" + (active*width).toString() + "px)";
@@ -74,55 +106,72 @@ function init() {
 
 }
 
+function resetSlide3(){
+  var addEngineer = document.getElementById("add-engineer");
+  document.getElementById("eng-title").innerHTML = "A Single Engineer's Day:";
+  addEngineer.checked = false;
+  addEngineer.innerHTML = "Add a Junior Engineer"
+  changePie("#pie1", PIE1);
+  document.getElementById("pie3").classList.remove("slideIn");
+  document.getElementById("pie3").classList.add("slideOut");
+}
+
+function replacePie(svgId, pieData, labelText){
+  var chart = d3.select(svgId)
+}
+
 function drawSVGs(){
 
-  drawPie("#pie1", PIE1, "Sr.")
-  drawPie("#pie2", PIE2, "Sr.")
-  drawPie("#pie3", PIE3, "Jr.")
+  drawPie("#pie1", PIE1, "Senior")
+  drawPie("#pie3", PIE3, "Junior")
 
   drawLineGraph()
 
 }
 
 function drawPie(svgId, pieData, labelText){
-  const chart = d3.select(svgId),
+  var chart = d3.select(svgId),
     width = +chart.attr("width"),
     height = +chart.attr("height"),
     radius = Math.min(width, height) / 2,
     g = chart.append("g").attr("transform", "translate(" + width / 3 + "," + height / 2 + ")");
 
-  const color = d3.scaleOrdinal(["green", "yellow", "steelblue"]);
+  var color = d3.scaleOrdinal(["green", "yellow", "steelblue"]);
 
-  const pie = d3.pie()
+  var pie = d3.pie()
     .sort(null)
     .value(function(d) {return (d.percent)});
 
-  const path = d3.arc()
+  var path = d3.arc()
     .outerRadius(radius - 10)
-    .innerRadius(80);
+    .innerRadius(135);
 
-  const label = d3.arc()
+  var label = d3.arc()
     .outerRadius(radius - 20)
     .innerRadius(radius - 20);
 
-  const arc = g.selectAll(".arc")
+  var arc = g.selectAll(".arc")
       .data(pie(pieData))
     .enter()
       .append("g")
-      .attr("class", function(d) {return ("arc " + d.data.type)});
+      .attr("class", "arc");
 
   arc.append("path")
     .attr("d", path)
-    .attr("fill", function(d) {return (color(d.data.index))});
+    .attr("fill", function(d, i) {return (color(i))})
+
+  chart.selectAll("path")
+    .transition()
+      .each(function(d) {this._current = d})
 
   arc.append("text")
     .attr("transform", function(d) {return ("translate(" + label.centroid(d) + ")")})
-    .attr("dy", "-3px")
+    .attr("dy", "8px")
     .attr("dx", "-5px")
     .text(function(d) {return (d.data.type + " (" + d.data.percent + "%)")});
 
   g.append("text")
-    .attr("transform", "translate(-20, 10)")
+    .attr("transform", "translate(-50, 10)")
     .attr("class", "jr-sr-label")
     .text(labelText);
 
@@ -132,22 +181,66 @@ function drawPie(svgId, pieData, labelText){
 
 }
 
+function changePie(svgId, data){
+  var chart = d3.select(svgId);
+
+  var pie = d3.pie()
+    .sort(null)
+    .value(function(d) {return (d.percent)});
+
+  chart.selectAll("path")
+    .data(pie(data));
+
+  chart.selectAll("path")
+    .transition()
+      .duration(750)
+      .attrTween("d", arcTween);
+
+  var g = chart.select("g")
+  var arc = g.selectAll(".arc")
+    .data(pie(data))
+  var label = d3.arc()
+    .outerRadius(180)
+    .innerRadius(180);
+
+  arc.selectAll("text").remove();
+
+  arc.append("text")
+    .attr("transform", function(d) {return ("translate(" + label.centroid(d) + ")")})
+    .attr("dy", "8px")
+    .attr("dx", "-5px")
+    .text(function(d) {return (d.data.type + " (" + d.data.percent + "%)")});
+
+}
+
+
+function arcTween(finish){
+  var arc = d3.arc()
+    .outerRadius(190)
+    .innerRadius(135);
+
+  var interpolator = d3.interpolate(this._current, finish);
+  this._current = interpolator(0);
+  return function(d) {return arc(interpolator(d)); };
+}
+
+
 function drawLineGraph(){
-  const margin = {top: 10, right: 10, bottom: 80, left: 75},
+  var margin = {top: 10, right: 10, bottom: 80, left: 75},
             width = 750 - margin.left - margin.right,
             height = 500 - margin.top - margin.bottom;
 
-  const chart = d3.select("#line")
+  var chart = d3.select("#line")
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom)
     .append("g")
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-  const x = d3.scaleLinear()
+  var x = d3.scaleLinear()
       .range([0, width])
       .domain([0, 10]);
 
-  const y = d3.scaleLinear()
+  var y = d3.scaleLinear()
       .range([height, 0])
       .domain([0, 200]);
 
@@ -172,12 +265,12 @@ function drawLineGraph(){
     .attr("dx", "-2.35em")
     .text("Challenging Project Time");
 
-  let area = d3.area()
+  var area = d3.area()
     .x(function(d) {return x(d.time)})
     .y0(height)
     .y1(function(d) {return y(d.work)})
 
-  let valueline = d3.line()
+  var valueline = d3.line()
       .x((d) => ( x(d.time) ))
       .y((d) => ( y(d.work) ));
 
@@ -242,17 +335,14 @@ var PIE1 = [
   {
     type: "Learning",
     percent: 10,
-    index: 0
   },
   {
     type: "Slow, necessary work",
     percent: 50,
-    index: 1
   },
   {
     type: "Challenging work",
     percent: 40,
-    index: 2
   }
 ]
 
@@ -260,17 +350,14 @@ var PIE2 = [
   {
     type: "Learning",
     percent: 10,
-    index: 0
   },
   {
     type: "Slow, necessary work",
     percent: 15,
-    index: 1
   },
   {
     type: "Challenging work",
     percent: 75,
-    index: 2
   }
 ]
 
@@ -278,17 +365,14 @@ var PIE3 = [
   {
     type: "Learning",
     percent: 30,
-    index: 0
   },
   {
     type: "Slow, necessary work",
     percent: 50,
-    index: 1
   },
   {
     type: "Challenging work",
     percent: 20,
-    index: 2
   }
 ]
 
