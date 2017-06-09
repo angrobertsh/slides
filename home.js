@@ -26,10 +26,10 @@ function init() {
       width = document.getElementById("car-content-container").offsetWidth*-1;
       left.classList.add("block");
       left.classList.remove("none");
-      if(active === 3){
+      if(active === 4){
         resetSlide3();
         rect.classList.add("shrink");
-      } else if (active === 4){
+      } else if (active === 5){
         rect.classList.remove("shrink");
       }
       active += 1;
@@ -47,16 +47,16 @@ function init() {
       width = document.getElementById("car-content-container").offsetWidth*-1;
       right.classList.add("block");
       right.classList.remove("none");
-      if(active === 3){
+      if(active === 4){
         resetSlide3();
-      } else if (active === 4){
+      } else if (active === 5){
         rect.classList.remove("shrink");
       }
       active -= 1;
       container.style.transform = "translateX(" + (active*width).toString() + "px)";
       if(active === 0){
         left.classList.add("none");
-      } else if (active === 4) {
+      } else if (active === 5) {
         rect.classList.add("shrink");
       }
     }
@@ -133,8 +133,9 @@ function drawPie(svgId, pieData, labelText){
   var chart = d3.select(svgId),
     width = +chart.attr("width"),
     height = +chart.attr("height"),
-    radius = Math.min(width, height) / 2,
-    g = chart.append("g").attr("transform", "translate(" + width / 3 + "," + height / 2 + ")");
+    radius = Math.min(width, height) / 2;
+
+  var g = svgId === "#pie1" ? chart.append("g").attr("transform", "translate(" + width / 3 + "," + height / 2 + ")") : chart.append("g").attr("transform", "translate(" + width / 2.25 + "," + height / 2 + ")");
 
   var color = d3.scaleOrdinal(["green", "yellow", "steelblue"]);
 
@@ -182,7 +183,10 @@ function drawPie(svgId, pieData, labelText){
 }
 
 function changePie(svgId, data){
-  var chart = d3.select(svgId);
+  var chart = d3.select(svgId),
+    width = +chart.attr("width"),
+    height = +chart.attr("height"),
+    radius = Math.min(width, height) / 2;
 
   var pie = d3.pie()
     .sort(null)
@@ -200,8 +204,8 @@ function changePie(svgId, data){
   var arc = g.selectAll(".arc")
     .data(pie(data))
   var label = d3.arc()
-    .outerRadius(180)
-    .innerRadius(180);
+    .outerRadius(radius - 20)
+    .innerRadius(radius - 20);
 
   arc.selectAll("text").remove();
 
@@ -305,7 +309,7 @@ function drawLineGraph(){
 }
 
 var REASONS = [
-  "I'm cute as a button",
+  "I'm cute as a button.",
   "I bake great cookies.",
   "I offer a fresh perspective on older problems.",
   "I offer a diverse perspective on problems.",

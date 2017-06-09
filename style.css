@@ -57,9 +57,11 @@ h1 {
 	-webkit-animation: fadeIn .5s ease-in;
 	animation: fadeIn .5s ease-in;
 	margin: 50px;
+	text-align: center;
 }
 
 h2 {
+	text-align: center;
 	font-size: 3.25rem;
 }
 
@@ -117,8 +119,11 @@ button:active {
 
 .car-button {
 	position: fixed;
-	height: 100px;
-	width: 30px;
+	min-height: 125px;
+	min-width: 35px;
+	height: 25%;
+	width: 4%;
+	max-width: 40px;
 	display: flex;
 	background-color: gray;
 	color: white;
@@ -137,11 +142,11 @@ button:active {
 }
 
 #car-left-button{
-	left: 20px;
+	left: 15px;
 }
 
 #car-right-button{
-	right: 20px;
+	right: 15px;
 }
 
 #car-content-wrapper {
@@ -173,7 +178,7 @@ button:active {
 }
 
 .car-content > * {
-	margin: 25px;
+	margin: 35px;
 }
 
 .me img {
@@ -182,23 +187,27 @@ button:active {
 	border-radius: 150px;
 }
 
-.outro {
-	margin: 10px;
-	width: 64px;
-	height: 64px;
-	padding: 10px;
-}
 
-.outro:hover {
-	transition: all .25s ease-out;
-	border-radius: 20px;
-	background-color: teal;
-}
 
 /*slide 1*/
 
 .dot {
 	font-size: 5rem;
+}
+
+/*slide 2.5*/
+
+#slide-2-and-a-half > * {
+	margin: 60px;
+}
+
+li {
+	list-style: circle;
+	margin: 40px 25px 40px 25px;
+}
+
+li > h4 {
+	height: auto !important;
 }
 
 /*graphs*/
@@ -260,6 +269,27 @@ svg text {
 	width: 666px;
 	height: 411px;
 	background-color: rgb(234, 230, 255);
+}
+
+/*slide 6*/
+
+#reasons{
+	text-align: center;
+}
+
+/*slide 7*/
+
+.outro {
+	margin: 10px;
+	width: 64px;
+	height: 64px;
+	padding: 10px;
+}
+
+.outro:hover {
+	transition: all .25s ease-out;
+	border-radius: 20px;
+	background-color: teal;
 }
 
 /*classes*/
@@ -358,7 +388,7 @@ svg text {
 }
 
 @keyframes superShrink {
-	0% {width: 550px;
+	0% {width: 450px;
 			transform: translateX(0px);}
 	100% {width: 0px;
 			transform: translateX(1000px);}
@@ -367,6 +397,6 @@ svg text {
 @keyframes superWiden {
 	0% {width: 0px;
 			transform: translateX(1000px);}
-	100% {width: 550px;
+	100% {width: 450px;
 			transform: translateX(0px);}
 }
