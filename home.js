@@ -14,6 +14,7 @@ function init() {
   var rect = document.getElementById("rect");
   var width;
   var active = 0;
+  var activeSlide = document.getElementById("slide-" + active);
   var str = "";
   var oldVal = 0;
   var val;
@@ -26,13 +27,14 @@ function init() {
       width = document.getElementById("car-content-container").offsetWidth*-1;
       left.classList.add("block");
       left.classList.remove("none");
-      if(active === 4){
+      if(activeSlide.id === "slide-4"){
         resetSlide3();
         rect.classList.add("shrink");
-      } else if (active === 5){
+      } else if (activeSlide.id === "slide-5"){
         rect.classList.remove("shrink");
       }
       active += 1;
+      activeSlide = document.getElementById("slide-" + active);
       container.style.transform = "translateX(" + (active*width).toString() + "px)";
       if(active === numElements - 1){
         right.classList.add("none");
@@ -47,16 +49,17 @@ function init() {
       width = document.getElementById("car-content-container").offsetWidth*-1;
       right.classList.add("block");
       right.classList.remove("none");
-      if(active === 4){
+      if(activeSlide.id === "slide-4"){
         resetSlide3();
-      } else if (active === 5){
+      } else if (activeSlide.id === "slide-5"){
         rect.classList.remove("shrink");
       }
       active -= 1;
+      activeSlide = document.getElementById("slide-" + active);
       container.style.transform = "translateX(" + (active*width).toString() + "px)";
       if(active === 0){
         left.classList.add("none");
-      } else if (active === 5) {
+      } else if (activeSlide.id === "slide-5") {
         rect.classList.add("shrink");
       }
     }
