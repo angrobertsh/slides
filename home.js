@@ -478,93 +478,67 @@ var LINE2 = [
 ]
 
 var BAR1 = [
-  {
-    topic: "JavaScript",
-    knowledge: 50,
-  },
-  {
-    topic: "Python",
-    knowledge: 25
-  },
-  {
-    topic: "CSS",
-    knowledge: 40
-  },
-  {
-    topic: "Ruby",
-    knowledge: 0
-  },
-  {
-    topic: "SQL",
-    knowledge: 0
-  }
+  "JavaScript":
+    {
+      s1: 50,
+      s2: 0,
+      j: 20
+    },
+  "Python":
+    {
+      s1: 25,
+      s2: 15,
+      j: 25
+    },
+  "Ruby":
+    {
+      s1: 40,
+      s2: 40,
+      j: 30
+    },
+  "CSS":
+    {
+      s1: 0,
+      s2: 50,
+      j: 20
+    },
+  "SQL":
+    {
+      s1: 0,
+      s2: 50,
+      j: 20
+    }
 ]
 
 var BAR2 = [
-  {
-    topic: "JavaScript",
-    knowledge: 0,
-  },
-  {
-    topic: "Python",
-    knowledge: 15
-  },
-  {
-    topic: "CSS",
-    knowledge: 40
-  },
-  {
-    topic: "Ruby",
-    knowledge: 50
-  },
-  {
-    topic: "SQL",
-    knowledge: 50
-  }
-]
-
-var BAR3 = [
-  {
-    topic: "JavaScript",
-    knowledge: 20,
-  },
-  {
-    topic: "Python",
-    knowledge: 25
-  },
-  {
-    topic: "CSS",
-    knowledge: 30
-  },
-  {
-    topic: "Ruby",
-    knowledge: 20
-  },
-  {
-    topic: "SQL",
-    knowledge: 20
-  }
-]
-
-var BAR4 = [
-  {
-    topic: "JavaScript",
-    knowledge: 20,
-  },
-  {
-    topic: "Python",
-    knowledge: 25
-  },
-  {
-    topic: "CSS",
-    knowledge: 30
-  },
-  {
-    topic: "Ruby",
-    knowledge: 0
-  },
-  {
-    topic: "SQL",
-    knowledge: 0
-  }
+  "JavaScript":
+    {
+      s1: 50,
+      s2: 0,
+      j: 20
+    },
+  "Python":
+    {
+      s1: 25,
+      s2: 15,
+      j: 25
+    },
+  "Ruby":
+    {
+      s1: 40,
+      s2: 40,
+      j: 30
+    },
+  "CSS":
+    {
+      s1: 0,
+      s2: 50,
+      j: 0
+    },
+  "SQL":
+    {
+      s1: 0,
+      s2: 50,
+      j: 0
+    }
 ]
