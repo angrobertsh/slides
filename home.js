@@ -125,12 +125,101 @@ function replacePie(svgId, pieData, labelText){
 
 function drawSVGs(){
 
-  drawPie("#pie1", PIE1, "Senior")
-  drawPie("#pie3", PIE3, "Junior")
+  drawPie("#pie1", PIE1, "Senior");
+  drawPie("#pie3", PIE3, "Junior");
 
-  drawLineGraph()
+  drawLineGraph();
+
+  drawBars();
 
 }
+
+function drawBars(){
+  var labels = Object.keys(BAR);
+  var subLabels = ["Senior1", "Junior", "Senior2"];
+
+  const margin = {top: 20, right: 0, bottom: 40, left: 55},
+      width = 960 - margin.left - margin.right,
+      height = 500 - margin.top - margin.bottom;
+
+  const chart = d3.select(".barchart")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+  // x and y are d3 scale objects/functions
+  const x = d3.scaleBand()
+    .rangeRound([0, width])
+    .paddingInner(0.1)
+    .domain(labels);
+
+  const x2 = d3.scaleBand()
+    .rangeRound([0, x.bandwidth()])
+    .padding(0.05)
+    .domain(subLabels);
+
+  const y = d3.scaleLinear()
+    .range([height, 0])
+    .domain(([0, 50]));
+
+  const z = d3.scaleOrdinal()
+    .range(["red", "green", "blue"])
+
+  // x axis ticks
+  chart.append("g")
+    .attr("class", "axis axis--x")
+    .attr("transform", "translate(0," + height + ")")
+    .call(d3.axisBottom(x));
+
+  // x axis labels
+  chart.append("text")
+    .attr("transform", "translate(" + (width/2) + " ," + (height + 35) + ")")
+    .style("text-anchor", "middle")
+    .text("Topic");
+
+  // y axis ticks
+  chart.append("g")
+    .attr("class", "axis axis--y")
+    .call(d3.axisLeft(y).ticks(10, "s"));
+
+  // y axis labels
+  chart.append("text")
+    .attr("transform", "rotate(-90) translate(" + (height/-2) + " , 0)")
+    .attr("dy", "-2.35em")
+    .text("Knowledge");
+
+  // rectangles
+
+  g.append("g")
+    .selectAll("g")
+    .data(BAR)
+    .enter().append("g")
+      .attr("transform", function(d) { return "translate(" + x(d.topic) + ",0)"; })
+    .selectAll("rect")
+    .data(function(d) { return subLabels.map(function(subLabel) { return {subLabel: subLabel, value: d.knowledge[subLabel]}; }); })
+    .enter().append("rect")
+      .attr("x", function(d) { return x2(d.subLabel); })
+      .attr("y", function(d) { return y(d.value); })
+      .attr("width", x2.bandwidth())
+      .attr("height", function(d) { return height - y(d.value); })
+      .attr("fill", function(d) { return z(d.subLabel); });
+
+  // labels.forEach((topic) => {this.populateBars(state, x, y, BARS[topic], chart, height)});
+
+}
+
+populateBars(state, xScale, yScale, data, chart, height){
+  // const bars = chart.selectAll("." + state)
+  //   .data(data)
+  // .enter().append("rect")
+  //   .attr("class", (d) => ("bar " + state + " " + d.party))
+  //   .attr("x", (d) => (xScale(state)))
+  //   .attr("y", (d) => (yScale(d.votes)))
+  //   .on("click", () => {this.props.click({currentState: state})});
+  //
+}
+
 
 function drawPie(svgId, pieData, labelText){
   var chart = d3.select(svgId),
@@ -477,68 +566,144 @@ var LINE2 = [
   },
 ]
 
-var BAR1 = [
-  "JavaScript":
-    {
-      s1: 50,
-      s2: 0,
-      j: 20
-    },
-  "Python":
-    {
-      s1: 25,
-      s2: 15,
-      j: 25
-    },
-  "Ruby":
-    {
-      s1: 40,
-      s2: 40,
-      j: 30
-    },
-  "CSS":
-    {
-      s1: 0,
-      s2: 50,
-      j: 20
-    },
-  "SQL":
-    {
-      s1: 0,
-      s2: 50,
-      j: 20
+var BAR = [
+  {
+    "topic": "JavaScript",
+    "knowledge": {
+      "Senior1": 50,
+      "Junior": 0
+      "Senior2": 0,
     }
+  },
+  {
+    "topic": "Python",
+    "knowledge": {
+      "Senior1": 25,
+      "Junior": 0
+      "Senior2": 15,
+    }
+  },
+  {
+    "topic": "Ruby",
+    "knowledge": {
+      "Senior1": 40,
+      "Junior": 0
+      "Senior2": 40,
+    }
+  },
+  {
+    "topic": "CSS",
+    "knowledge": {
+      "Senior1": 0,
+      "Junior": 0
+      "Senior2": 50,
+    }
+  },
+  {
+    "topic": "SQL",
+    "knowledge": {
+      "Senior1": 0,
+      "Junior": 0
+      "Senior2": 50,
+    }
+  }
 ]
 
-var BAR2 = [
-  "JavaScript":
-    {
-      s1: 50,
-      s2: 0,
-      j: 20
-    },
-  "Python":
-    {
-      s1: 25,
-      s2: 15,
-      j: 25
-    },
-  "Ruby":
-    {
-      s1: 40,
-      s2: 40,
-      j: 30
-    },
-  "CSS":
-    {
-      s1: 0,
-      s2: 50,
-      j: 0
-    },
-  "SQL":
-    {
-      s1: 0,
-      s2: 50,
-      j: 0
+var J1 = {
+  {
+    "topic": "JavaScript",
+    "knowledge": {
+      "Junior": 20
     }
-]
+  },
+  {
+    "topic": "Python",
+    "knowledge": {
+      "Junior": 25
+    }
+  },
+  {
+    "topic": "Ruby",
+    "knowledge": {
+      "Junior": 30
+    }
+  },
+  {
+    "topic": "CSS",
+    "knowledge": {
+      "Junior": 20
+    }
+  },
+  {
+    "topic": "SQL",
+    "knowledge": {
+      "Junior": 20
+    }
+  }
+}
+
+var J2 = {
+  {
+    "topic": "JavaScript",
+    "knowledge": {
+      "Junior": 20
+    }
+  },
+  {
+    "topic": "Python",
+    "knowledge": {
+      "Junior": 25
+    }
+  },
+  {
+    "topic": "Ruby",
+    "knowledge": {
+      "Junior": 30
+    }
+  },
+  {
+    "topic": "CSS",
+    "knowledge": {
+      "Junior": 0
+    }
+  },
+  {
+    "topic": "SQL",
+    "knowledge": {
+      "Junior": 0
+    }
+  }
+}
+
+var S = {
+  {
+    "topic": "JavaScript",
+    "knowledge": {
+      "Senior2": 20
+    }
+  },
+  {
+    "topic": "Python",
+    "knowledge": {
+      "Senior2": 25
+    }
+  },
+  {
+    "topic": "Ruby",
+    "knowledge": {
+      "Senior2": 30
+    }
+  },
+  {
+    "topic": "CSS",
+    "knowledge": {
+      "Senior2": 0
+    }
+  },
+  {
+    "topic": "SQL",
+    "knowledge": {
+      "Senior2": 0
+    }
+  }
+}
