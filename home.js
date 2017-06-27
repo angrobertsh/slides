@@ -138,11 +138,11 @@ function drawBars(){
   var labels = ["JavaScript", "Python", "Ruby", "CSS", "SQL"];
   var subLabels = ["Senior1", "Junior", "Senior2"];
 
-  const margin = {top: 20, right: 0, bottom: 40, left: 55},
+  var margin = {top: 20, right: 0, bottom: 40, left: 55},
       width = 750 - margin.left - margin.right,
       height = 400 - margin.top - margin.bottom;
 
-  const chart = d3.select(".barchart")
+  var chart = d3.select(".barchart")
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom)
 
@@ -150,21 +150,21 @@ function drawBars(){
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
   // x and y are d3 scale objects/functions
-  const x = d3.scaleBand()
+  var x = d3.scaleBand()
     .rangeRound([0, width])
     .paddingInner(0.1)
     .domain(labels);
 
-  const x2 = d3.scaleBand()
+  var x2 = d3.scaleBand()
     .rangeRound([0, x.bandwidth()])
     .padding(0.05)
     .domain(subLabels);
 
-  const y = d3.scaleLinear()
+  var y = d3.scaleLinear()
     .range([height, 0])
     .domain(([0, 50]));
 
-  const z = d3.scaleOrdinal()
+  var z = d3.scaleOrdinal()
     .range(["red", "green", "blue"])
 
   // x axis ticks
@@ -211,7 +211,7 @@ function drawBars(){
 }
 
 // populateBars(state, xScale, yScale, data, chart, height){
-//   // const bars = chart.selectAll("." + state)
+//   // var bars = chart.selectAll("." + state)
 //   //   .data(data)
 //   // .enter().append("rect")
 //   //   .attr("class", (d) => ("bar " + state + " " + d.party))
@@ -399,6 +399,16 @@ function drawLineGraph(){
       .attr("transform", "translate(" + (width/1.7) + " ," + (height - 50) + ")")
       .text("Without a junior engineer");
 
+}
+
+function merge(baseArr, newArr){
+  var i = 0;
+  var mergeKey = Object.keys(newArr[0]["knowledge"])[0]
+  while(i < baseArr.length){
+    baseArr[i]["knowledge"][mergeKey] = newArr[i]["knowledge"][mergeKey];
+    i += 1;
+  }
+  return baseArr;
 }
 
 var REASONS = [
@@ -606,6 +616,39 @@ var BAR = [
       "Senior1": 0,
       "Junior": 0,
       "Senior2": 50,
+    }
+  }
+]
+
+var J0 = [
+  {
+    "topic": "JavaScript",
+    "knowledge": {
+      "Junior": 0
+    }
+  },
+  {
+    "topic": "Python",
+    "knowledge": {
+      "Junior": 0
+    }
+  },
+  {
+    "topic": "Ruby",
+    "knowledge": {
+      "Junior": 0
+    }
+  },
+  {
+    "topic": "CSS",
+    "knowledge": {
+      "Junior": 0
+    }
+  },
+  {
+    "topic": "SQL",
+    "knowledge": {
+      "Junior": 0
     }
   }
 ]
